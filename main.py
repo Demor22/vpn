@@ -22,13 +22,25 @@ class VPN_Server:
 
     def handle_client(self, client_socket):
         try:
-            while True:
-                data = client_socket.recv(4096)
-                if not data:
-                    break
+            # Отправляем требование ввода логина и пароля
+            client_socket.sendall(b"Введите логин: ")
+            login = client_socket.recv(1024).decode().strip()
 
-                processed_data = self.process_data(data)
-                client_socket.sendall(processed_data)
+            client_socket.sendall(b"Введите пароль: ")
+            password = client_socket.recv(1024).decode().strip()
+
+            # Проверяем логин и пароль
+            if login == "Demor22" and password == "Bazar228":
+                client_socket.sendall(b"Доступ разрешен. Введите данные для обработки:\n")
+                while True:
+                    data = client_socket.recv(4096)
+                    if not data:
+                        break
+
+                    processed_data = self.process_data(data)
+                    client_socket.sendall(processed_data)
+            else:
+                client_socket.sendall(b"Неверный логин или пароль. Соединение закрыто.\n")
         except Exception as e:
             print(f"Произошла ошибка во время обработки клиента: {e}")
         finally:
