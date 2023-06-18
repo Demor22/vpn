@@ -53,5 +53,5 @@ class VPN_Server:
 
 
 # Создаем экземпляр VPN-сервера и запускаем его
-vpn_server = VPN_Server('localhost', 12345)
+vpn_server = VPN_Server('localhost', 3000)
 vpn_server.start()
